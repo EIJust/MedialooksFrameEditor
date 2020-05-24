@@ -17,7 +17,10 @@ namespace MedialooksFrameEditor.Services
         public FrameService()
         {
             _mfReader = new MFReader();
+            MFPreview = new MFPreviewClass();
         }
+
+        public MFPreviewClass MFPreview { get; }
 
         public MFFrame GetFrame()
         {

@@ -5,6 +5,8 @@ namespace MedialooksFrameEditor.Services
 {
     public interface IFrameService
     {
+        MFPreviewClass MFPreview { get; }
+
         bool TryOpenFile(string path, out string error);
         MFFrame GetFrame();
         MFFrame DrawLinesOnFrame(MFFrame mFrame, bool isDrawing, List<CurveLine> lines, int panelWidth, int panelHeight, int x, int y);

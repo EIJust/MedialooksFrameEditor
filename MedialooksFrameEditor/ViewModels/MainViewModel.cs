@@ -5,6 +5,7 @@ using MedialooksFrameEditor.Services;
 using MFORMATSLib;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Interop;
 
 namespace MedialooksFrameEditor.ViewModels
@@ -16,7 +17,6 @@ namespace MedialooksFrameEditor.ViewModels
         private readonly ISurfaceService _surfaceService;
 
         private readonly BackgroundWorker _backgroundWorker;
-        private readonly MFPreviewClass _mfPreview;
 
         private string _filePath;
         public D3DImage _previewSurface;
@@ -43,17 +43,17 @@ namespace MedialooksFrameEditor.ViewModels
             _backgroundWorker = new BackgroundWorker();
             _backgroundWorker.DoWork += WorkerDoWork;
 
-            _mfPreview = new MFPreviewClass();
             _drawLines = new List<CurveLine>();
-
-            _mfPreview.PreviewEnable("", 0, 1);
-            _mfPreview.PropsSet("wpf_preview", "true");
 
             PenSize = 1;
             Width = 100;
             Height = 100;
             PenColor = System.Windows.Media.Color.FromRgb(0, 0, 0);
             AvailablePenSizes = new int[] { 1, 2, 4, 8, 16 };
+
+            _frameService.MFPreview.PreviewEnable("", 0, 1);
+            _frameService.MFPreview.PropsSet("wpf_preview", "true");
+
         }
 
         public D3DImage PreviewSurface
@@ -113,9 +113,9 @@ namespace MedialooksFrameEditor.ViewModels
 
         private void StartPreview()
         {
-            _mfPreview.OnEventSafe -= HandlePreviewEvent;
+            _frameService.MFPreview.OnEventSafe -= HandlePreviewEvent;
             PreviewSurface = new D3DImage();
-            _mfPreview.OnEventSafe += HandlePreviewEvent;
+            _frameService.MFPreview.OnEventSafe += HandlePreviewEvent;
         }
 
         private void HandlePreviewEvent(string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
@@ -139,7 +139,7 @@ namespace MedialooksFrameEditor.ViewModels
                     frame = _frameService.DrawTextOnFrame(frame, _drawText);
                 }
 
-                _mfPreview.ReceiverFramePut(frame, -1, "");
+                _frameService.MFPreview.ReceiverFramePut(frame, -1, "");
             }
         }
 
