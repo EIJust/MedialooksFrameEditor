@@ -2,10 +2,9 @@
 using GalaSoft.MvvmLight.Command;
 using MedialooksFrameEditor.Models;
 using MedialooksFrameEditor.Services;
-using MFORMATSLib;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Interop;
 
 namespace MedialooksFrameEditor.ViewModels
@@ -21,12 +20,14 @@ namespace MedialooksFrameEditor.ViewModels
         private string _filePath;
         public D3DImage _previewSurface;
         private List<CurveLine> _drawLines;
-        private string _drawText = "test";
 
         private bool _isMouseMoving;
         private bool _drawingLine;
         private System.Windows.Media.Color _penColor;
         private int _penSize;
+        private int _panelWidth;
+        private int _panelHeight;
+        private string _text;
 
         public MainViewModel(IDialogService dialogService, IFrameService frameService, ISurfaceService surfaceService)
         {
@@ -53,9 +54,18 @@ namespace MedialooksFrameEditor.ViewModels
 
             _frameService.MFPreview.PreviewEnable("", 0, 1);
             _frameService.MFPreview.PropsSet("wpf_preview", "true");
-
+            _frameService.MFPreview.PropsSet("wpf_preview.update", "0");
         }
 
+        public string Text
+        {
+            get => _text;
+            set
+            {
+                _text = value;
+                RaisePropertyChanged();
+            }
+        }
         public D3DImage PreviewSurface
         {
             get => _previewSurface;
@@ -102,13 +112,42 @@ namespace MedialooksFrameEditor.ViewModels
         public int MouseX { get; set; }
         public int MouseY { get; set; }
 
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int Width
+        {
+            get => _panelWidth;
+            set
+            {
+                _panelWidth = value;
+                RaisePropertyChanged();
+                UpdateOverlay();
+            }
+        }
+        public int Height
+        {
+            get => _panelHeight;
+            set
+            {
+                _panelHeight = value;
+                RaisePropertyChanged();
+                UpdateOverlay();
+            }
+        }
+
+        private void UpdateOverlay()
+        {
+            var overlay = new MFORMATSLib.MF_RECT();
+            overlay.dblWidth = Width;
+            overlay.dblHeight = Height;
+
+            overlay.eRectType = MFORMATSLib.eMFRectType.eMFRT_Absolute;
+
+            _frameService.Overlay = overlay;
+        }
 
         private void ClearAll()
         {
             _drawLines.Clear();
-            _drawText = string.Empty;
+            Text = string.Empty;
         }
 
         private void StartPreview()
@@ -134,12 +173,12 @@ namespace MedialooksFrameEditor.ViewModels
 
                 frame = _frameService.DrawLinesOnFrame(frame, _isMouseMoving, _drawLines, Width, Height, MouseX, MouseY);
 
-                if (_drawText != string.Empty)
+                if (Text != null)
                 {
-                    frame = _frameService.DrawTextOnFrame(frame, _drawText);
+                    frame = _frameService.DrawTextOnFrame(frame, Text);
                 }
 
-                _frameService.MFPreview.ReceiverFramePut(frame, -1, "");
+                _frameService.PreviewFrame(frame);
             }
         }
 

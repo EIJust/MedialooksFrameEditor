@@ -12,15 +12,15 @@ namespace MedialooksFrameEditor.Services
 
         private readonly MFReader _mfReader;
 
-        private MF_RECT _rcOverlay;
-
         public FrameService()
         {
             _mfReader = new MFReader();
+
             MFPreview = new MFPreviewClass();
         }
 
         public MFPreviewClass MFPreview { get; }
+        public MF_RECT Overlay { get; set; }
 
         public MFFrame GetFrame()
         {
@@ -52,8 +52,8 @@ namespace MedialooksFrameEditor.Services
                 {
                     mFrame.MFClone(out mFrameClone, eMFrameClone.eMFC_Full, eMFCC.eMFCC_Default);
 
-                    var rcOverlay = _rcOverlay;
-                    mFrameClone.MFPrint(text, 8, ref rcOverlay, eMFTextFlags.eMFT_WordBreaks, "");
+                    var overlay = Overlay;
+                    mFrameClone.MFPrint(text, 8, ref overlay, eMFTextFlags.eMFT_WordBreaks, "");
                     Marshal.ReleaseComObject(mFrame);
                     return mFrameClone;
                 }
@@ -67,6 +67,11 @@ namespace MedialooksFrameEditor.Services
             }
 
             return mFrame;
+        }
+
+        public void PreviewFrame(MFFrame frame, int maxWait = -1, string hints = "")
+        {
+            MFPreview.ReceiverFramePut(frame, maxWait, hints);
         }
 
         public bool TryOpenFile(string path, out string error)

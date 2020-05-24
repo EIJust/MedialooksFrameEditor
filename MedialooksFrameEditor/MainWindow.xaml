@@ -6,6 +6,7 @@
         mc:Ignorable="d"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:MedialooksFrameEditor.Behaviors"
+        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:helpers="clr-namespace:MedialooksFrameEditor.Helpers" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:converters="clr-namespace:MedialooksFrameEditor.Converters"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="FrameEditor"
@@ -85,16 +86,18 @@
                 <materialDesign:ColorPicker Color="{Binding PenColor, Mode=TwoWay, Delay=25}" Grid.Column="1" x:Name="ColorPicker" />
             </Grid>
 
-            <RichTextBox
-                    Style="{StaticResource MaterialDesignRichTextBox}"
-                    VerticalAlignment="Top"
-                    Height="100"
+            <toolkit:RichTextBox
+                    Text="{Binding Text}"
+                    VerticalAlignment="Stretch"
                     AcceptsReturn="True"
                     VerticalScrollBarVisibility="Auto"
                     materialDesign:HintAssist.Hint="This is a text area"
                     Grid.Column="1"
-                    Margin="5"
-                    IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignOutlinedTextFieldTextBoxEnabledComboBox}" />
+                    Margin="5 0 5 5">
+                <toolkit:RichTextBox.TextFormatter>
+                    <toolkit:PlainTextFormatter />
+                </toolkit:RichTextBox.TextFormatter>
+            </toolkit:RichTextBox>
         </Grid>
     </Grid>
 </Window>

@@ -14,42 +14,29 @@ namespace MedialooksFrameEditor.Models
             if (bsEventName == "wpf_nextframe")
             {
                 IntPtr pSurfaceIUnk = Marshal.GetIUnknownForObject(pEventObject);
-                if (pSurfaceIUnk != IntPtr.Zero)
+                if (pSurfaceIUnk != _pSavedSurfaceIUnk)
                 {
-                    if (pSurfaceIUnk != _pSavedSurfaceIUnk)
-                    {
+                    if (_pSavedSurfaceIUnk != IntPtr.Zero)
+                        Marshal.Release(_pSavedSurfaceIUnk);
 
-                        // Release prev object
-                        if (_pSavedSurfaceIUnk != IntPtr.Zero)
-                        {
-                            Marshal.Release(_pSavedSurfaceIUnk);
-                            _pSavedSurfaceIUnk = IntPtr.Zero;
-                        }
+                    _pSavedSurfaceIUnk = pSurfaceIUnk;
+                    Marshal.AddRef(_pSavedSurfaceIUnk);
 
-                        _pSavedSurfaceIUnk = pSurfaceIUnk;
-                        Marshal.AddRef(_pSavedSurfaceIUnk);
-
-                        previewSurface.Lock();
-                        previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
-                        previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _pSavedSurfaceIUnk);
-                        previewSurface.Unlock();
-                    }
-
-                    Marshal.Release(pSurfaceIUnk);
+                    previewSurface.Lock();
+                    previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
+                    previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _pSavedSurfaceIUnk);
+                    previewSurface.Unlock();
                 }
-                Marshal.ReleaseComObject(pEventObject);
+
+                if (pSurfaceIUnk != IntPtr.Zero)
+                    Marshal.Release(pSurfaceIUnk);
 
                 previewSurface.Lock();
-                try
-                {
-                    previewSurface.AddDirtyRect(new Int32Rect(0, 0, previewSurface.PixelWidth, previewSurface.PixelHeight));
-                }
-                catch (Exception)
-                {
-                    previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _pSavedSurfaceIUnk);
-                }
+                previewSurface.AddDirtyRect(new Int32Rect(0, 0, previewSurface.PixelWidth, previewSurface.PixelHeight));
                 previewSurface.Unlock();
             }
+
+            Marshal.ReleaseComObject(pEventObject);
         }
     }
 }
