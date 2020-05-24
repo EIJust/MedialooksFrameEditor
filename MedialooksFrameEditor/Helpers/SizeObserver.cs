@@ -57,7 +57,9 @@ namespace MedialooksFrameEditor.Helpers
             if ((bool)e.NewValue)
             {
                 frameworkElement.SizeChanged += OnFrameworkElementSizeChanged;
-                UpdateObservedSizesForFrameworkElement(frameworkElement);
+
+                frameworkElement.SetCurrentValue(ObservedWidthProperty, frameworkElement.Width);
+                frameworkElement.SetCurrentValue(ObservedHeightProperty, frameworkElement.Height);
             }
             else
             {

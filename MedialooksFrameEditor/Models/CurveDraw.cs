@@ -8,14 +8,7 @@ namespace MedialooksFrameEditor.Services
 {
     public class CurveDraw
     {
-        private List<CurveLine> _linesToDraw;
-
-        public CurveDraw(List<CurveLine> linesToDraw)
-        {
-            _linesToDraw = linesToDraw;
-        }
-
-        public Bitmap MFrame2Bitmap(ref MFFrame _mFrame, out M_VID_PROPS _vidProps)
+        public static Bitmap MFrame2Bitmap(ref MFFrame _mFrame, out M_VID_PROPS _vidProps)
         {
             // Clone frame to RGB32
             MFFrame mFrame = _mFrame;
@@ -43,7 +36,7 @@ namespace MedialooksFrameEditor.Services
             return bmpPicture;
         }
 
-        public MFFrame DrawFrame(bool _draw, MFFrame _mFrame, int _panelWidth, int _panelHeight, int _x, int _y)
+        public static MFFrame DrawFrame(bool _draw, MFFrame _mFrame, int _panelWidth, int _panelHeight, int _x, int _y, List<CurveLine> _linesToDraw)
         {
             if (_mFrame != null)
             {

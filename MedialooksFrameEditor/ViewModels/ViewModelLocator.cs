@@ -1,5 +1,6 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using MedialooksFrameEditor.Models;
 using MedialooksFrameEditor.Services;
 
 namespace MedialooksFrameEditor.ViewModels
@@ -13,7 +14,8 @@ namespace MedialooksFrameEditor.ViewModels
             SimpleIoc.Default.Register<MainViewModel>();
 
             SimpleIoc.Default.Register<IDialogService, DefaultDialogService>();
-            SimpleIoc.Default.Register<IFrameLoader, FrameLoader>();
+            SimpleIoc.Default.Register<IFrameService, FrameService>();
+            SimpleIoc.Default.Register<ISurfaceService, SurfaceService>();
         }
 
         public MainViewModel Main => SimpleIoc.Default.GetInstance<MainViewModel>();
