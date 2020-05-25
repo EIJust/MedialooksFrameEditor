@@ -63,20 +63,6 @@ namespace MedialooksFrameEditor.ViewModels
             _frameService.MFPreview.PropsSet("wpf_preview.update", "0");
         }
 
-        private void HandleSessionSwitch(object sender, SessionSwitchEventArgs e)
-        {
-            if (e.Reason == SessionSwitchReason.SessionUnlock)
-            {
-                PreviewSurface.Dispatcher.Invoke(new Action(() =>
-                {
-                    PreviewSurface.Lock();
-                    PreviewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
-                    PreviewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _surfaceService.SavedSurfaceIUnk);
-                    PreviewSurface.Unlock();
-                }), DispatcherPriority.ContextIdle);
-            }
-        }
-
         public string Text
         {
             get => _text;
@@ -174,6 +160,20 @@ namespace MedialooksFrameEditor.ViewModels
                 _panelHeight = value;
                 RaisePropertyChanged();
                 UpdateOverlay();
+            }
+        }
+
+        private void HandleSessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                PreviewSurface.Dispatcher.Invoke(new Action(() =>
+                {
+                    PreviewSurface.Lock();
+                    PreviewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
+                    PreviewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _surfaceService.SavedSurfaceIUnk);
+                    PreviewSurface.Unlock();
+                }), DispatcherPriority.ContextIdle);
             }
         }
 
