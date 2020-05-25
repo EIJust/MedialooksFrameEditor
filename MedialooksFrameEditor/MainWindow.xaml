@@ -34,8 +34,9 @@
                 VerticalAlignment="Stretch"
                 
                 helpers:SizeObserver.Observe="True"
-                helpers:SizeObserver.ObservedWidth="{Binding Width, Mode=TwoWay}"
-                helpers:SizeObserver.ObservedHeight="{Binding Height, Mode=TwoWay}">
+                helpers:SizeObserver.ObservedWidth="{Binding Width, Mode=OneWayToSource}"
+                helpers:SizeObserver.ObservedHeight="{Binding Height, Mode=OneWayToSource}"
+                Margin="5">
                 <i:Interaction.Behaviors>
                     <behaviors:MouseBehaviour 
                     MouseX="{Binding MouseX, Mode=OneWayToSource}"
