@@ -99,9 +99,7 @@
     <Compile Include="Behaviors\MouseBehavior.cs" />
     <Compile Include="Converters\BrushToHexConverter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
-    <Compile Include="Converters\DocumentToTextConverter.cs" />
     <Compile Include="Helpers\SizeObserver.cs" />
-    <Compile Include="Helpers\RichTextBoxHelper.cs" />
     <Compile Include="Models\CurveDraw.cs" />
     <Compile Include="Models\CurveLine.cs" />
     <Compile Include="Services\ISurfaceService.cs" />

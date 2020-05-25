@@ -1,7 +1,6 @@
-﻿using MedialooksFrameEditor.ViewModels;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace MedialooksFrameEditor.Views
 {
@@ -13,6 +12,12 @@ namespace MedialooksFrameEditor.Views
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

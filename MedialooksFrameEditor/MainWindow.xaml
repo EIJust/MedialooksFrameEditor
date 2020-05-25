@@ -79,25 +79,48 @@
                       Style="{StaticResource MaterialDesignFloatingHintComboBox}">
                     </ComboBox>
                     <TextBox DockPanel.Dock="Bottom" Text="{Binding Color, ElementName=ColorPicker, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource MaterialDesignFilledTextFieldTextBox}" materialDesign:HintAssist.Hint="Color HEX value"
+                                     Style="{StaticResource MaterialDesignFilledTextFieldTextBox}"
+                                     materialDesign:HintAssist.Hint="Color HEX value"
                                      Margin="2,2,10,35"/>
                     <Rectangle DockPanel.Dock="Bottom" Height="70" Fill="{Binding Color, ElementName=ColorPicker, Converter={StaticResource ColorToBrushConverter}}" Margin="2,2,10,2" />
                 </DockPanel>
                 <materialDesign:ColorPicker Color="{Binding PenColor, Mode=TwoWay, Delay=25}" Grid.Column="1" x:Name="ColorPicker" />
             </Grid>
 
-            <toolkit:RichTextBox
+            <DockPanel Grid.Column="1">
+                <toolkit:RichTextBox
                     Text="{Binding Text}"
                     VerticalAlignment="Stretch"
+                    Height="190"
                     AcceptsReturn="True"
                     VerticalScrollBarVisibility="Auto"
                     materialDesign:HintAssist.Hint="This is a text area"
-                    Grid.Column="1"
+                    DockPanel.Dock="Top"
                     Margin="5 0 5 5">
-                <toolkit:RichTextBox.TextFormatter>
-                    <toolkit:PlainTextFormatter />
-                </toolkit:RichTextBox.TextFormatter>
-            </toolkit:RichTextBox>
+                    <toolkit:RichTextBox.TextFormatter>
+                        <toolkit:PlainTextFormatter />
+                    </toolkit:RichTextBox.TextFormatter>
+                </toolkit:RichTextBox>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="5" Height="40" VerticalAlignment="Top">
+                    <TextBox 
+                        materialDesign:HintAssist.Hint="X"
+                        PreviewTextInput="NumberValidationTextBox"
+                        Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                        Text="{Binding TextX, Mode=TwoWay}"/>
+                    <TextBox 
+                        materialDesign:HintAssist.Hint="Y"
+                        Margin="5 0 0 0"
+                        PreviewTextInput="NumberValidationTextBox"
+                        Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                        Text="{Binding TextY, Mode=TwoWay}"/>
+                    <TextBox 
+                        materialDesign:HintAssist.Hint="Font Size"
+                        Margin="5 0 0 0"
+                        PreviewTextInput="NumberValidationTextBox"
+                        Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                        Text="{Binding FontSize, Mode=TwoWay}"/>
+                </StackPanel>
+            </DockPanel>
         </Grid>
     </Grid>
 </Window>

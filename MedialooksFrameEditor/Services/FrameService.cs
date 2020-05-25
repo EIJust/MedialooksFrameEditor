@@ -43,7 +43,7 @@ namespace MedialooksFrameEditor.Services
             return mFrame;
         }
 
-        public MFFrame DrawTextOnFrame(MFFrame mFrame, string text)
+        public MFFrame DrawTextOnFrame(MFFrame mFrame, string text, int fontSize = 8)
         {
             if (!string.IsNullOrEmpty(text))
             {
@@ -53,7 +53,7 @@ namespace MedialooksFrameEditor.Services
                     mFrame.MFClone(out mFrameClone, eMFrameClone.eMFC_Full, eMFCC.eMFCC_Default);
 
                     var overlay = Overlay;
-                    mFrameClone.MFPrint(text, 8, ref overlay, eMFTextFlags.eMFT_WordBreaks, "");
+                    mFrameClone.MFPrint(text, fontSize, ref overlay, eMFTextFlags.eMFT_WordBreaks, "");
                     Marshal.ReleaseComObject(mFrame);
                     return mFrameClone;
                 }

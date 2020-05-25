@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Documents;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace MedialooksFrameEditor.ViewModels
 {
@@ -28,6 +29,8 @@ namespace MedialooksFrameEditor.ViewModels
         private int _panelWidth;
         private int _panelHeight;
         private string _text;
+        private int _textX;
+        private int _textY;
 
         public MainViewModel(IDialogService dialogService, IFrameService frameService, ISurfaceService surfaceService)
         {
@@ -47,9 +50,10 @@ namespace MedialooksFrameEditor.ViewModels
             _drawLines = new List<CurveLine>();
 
             PenSize = 1;
+            FontSize = 8;
             Width = 100;
             Height = 100;
-            PenColor = System.Windows.Media.Color.FromRgb(0, 0, 0);
+            PenColor = Color.FromRgb(0, 0, 0);
             AvailablePenSizes = new int[] { 1, 2, 4, 8, 16 };
 
             _frameService.MFPreview.PreviewEnable("", 0, 1);
@@ -75,7 +79,7 @@ namespace MedialooksFrameEditor.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public System.Windows.Media.Color PenColor
+        public Color PenColor
         {
             get => _penColor; set
             {
@@ -112,6 +116,30 @@ namespace MedialooksFrameEditor.ViewModels
         public int MouseX { get; set; }
         public int MouseY { get; set; }
 
+        public int FontSize { get; set; }
+
+        public int TextX
+        {
+            get => _textX;
+            set
+            {
+                _textX = value;
+                RaisePropertyChanged();
+                UpdateOverlay();
+            } 
+        }
+
+        public int TextY
+        {
+            get => _textY;
+            set
+            {
+                _textY = value;
+                RaisePropertyChanged();
+                UpdateOverlay();
+            }
+        }
+
         public int Width
         {
             get => _panelWidth;
@@ -136,8 +164,10 @@ namespace MedialooksFrameEditor.ViewModels
         private void UpdateOverlay()
         {
             var overlay = new MFORMATSLib.MF_RECT();
-            overlay.dblWidth = Width;
-            overlay.dblHeight = Height;
+            overlay.dblWidth = Width - TextX;
+            overlay.dblHeight = Height - TextY;
+            overlay.dblPosX = TextX;
+            overlay.dblPosY = TextY;
 
             overlay.eRectType = MFORMATSLib.eMFRectType.eMFRT_Absolute;
 
@@ -175,7 +205,7 @@ namespace MedialooksFrameEditor.ViewModels
 
                 if (Text != null)
                 {
-                    frame = _frameService.DrawTextOnFrame(frame, Text);
+                    frame = _frameService.DrawTextOnFrame(frame, Text, FontSize);
                 }
 
                 _frameService.PreviewFrame(frame);
