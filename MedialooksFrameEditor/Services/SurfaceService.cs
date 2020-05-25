@@ -9,6 +9,11 @@ namespace MedialooksFrameEditor.Models
     {
         public IntPtr SavedSurfaceIUnk { get; private set; }
 
+        public void ClearSurface()
+        {
+            SavedSurfaceIUnk = new IntPtr();
+        }
+
         public void UpdateSurface(D3DImage previewSurface, string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
         {
             if (bsEventName == "wpf_nextframe")

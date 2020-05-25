@@ -92,7 +92,7 @@ namespace MedialooksFrameEditor.ViewModels
             set
             {
                 _previewSurface = value;
-                RaisePropertyChanged();
+                OnPropertyChanged("PreviewSurface");
             }
         }
         public Color PenColor
@@ -261,6 +261,7 @@ namespace MedialooksFrameEditor.ViewModels
 
         private void TryOpenFile(string path)
         {
+            _surfaceService.ClearSurface();
             if (_frameService.TryOpenFile(path, out string error))
             {
                 StartPreview();
@@ -273,6 +274,11 @@ namespace MedialooksFrameEditor.ViewModels
             {
                 _dialogService.ShowMessage(error);
             }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChangedHandler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

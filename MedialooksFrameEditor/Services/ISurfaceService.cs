@@ -7,6 +7,7 @@ namespace MedialooksFrameEditor.Models
     {
         IntPtr SavedSurfaceIUnk { get; }
 
+        void ClearSurface();
         void UpdateSurface(D3DImage previewSurface, string bsChannelID, string bsEventName, string bsEventParam, object pEventObject);
     }
 }
