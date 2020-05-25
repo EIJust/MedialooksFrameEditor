@@ -6,7 +6,6 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -20,10 +19,10 @@ namespace MedialooksFrameEditor.ViewModels
         private readonly ISurfaceService _surfaceService;
 
         private readonly BackgroundWorker _backgroundWorker;
+        private readonly List<CurveLine> _drawLines;
 
         private string _filePath;
-        public D3DImage _previewSurface;
-        private List<CurveLine> _drawLines;
+        private D3DImage _previewSurface;
 
         private bool _isMouseMoving;
         private bool _drawingLine;
@@ -56,7 +55,7 @@ namespace MedialooksFrameEditor.ViewModels
             PenSize = 1;
             FontSize = 8;
             PenColor = Color.FromRgb(0, 0, 0);
-            AvailablePenSizes = new int[] { 1, 2, 4, 8, 16 };
+            AvailablePenSizes = new[] { 1, 2, 4, 8, 16 };
 
             _frameService.MFPreview.PreviewEnable("", 0, 1);
             _frameService.MFPreview.PropsSet("wpf_preview", "true");
@@ -210,7 +209,7 @@ namespace MedialooksFrameEditor.ViewModels
 
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            BackgroundWorker bw = sender as BackgroundWorker;
+            var bw = sender as BackgroundWorker;
 
             while (!bw.CancellationPending)
             {
