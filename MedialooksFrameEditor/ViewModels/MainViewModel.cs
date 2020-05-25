@@ -59,7 +59,6 @@ namespace MedialooksFrameEditor.ViewModels
 
             _frameService.MFPreview.PreviewEnable("", 0, 1);
             _frameService.MFPreview.PropsSet("wpf_preview", "true");
-            _frameService.MFPreview.PropsSet("wpf_preview.update", "0");
         }
 
         public string Text
