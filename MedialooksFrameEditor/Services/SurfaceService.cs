@@ -7,24 +7,24 @@ namespace MedialooksFrameEditor.Models
 {
     public class SurfaceService : ISurfaceService
     {
-        private IntPtr _pSavedSurfaceIUnk;
+        public IntPtr SavedSurfaceIUnk { get; private set; }
 
         public void UpdateSurface(D3DImage previewSurface, string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
         {
             if (bsEventName == "wpf_nextframe")
             {
                 IntPtr pSurfaceIUnk = Marshal.GetIUnknownForObject(pEventObject);
-                if (pSurfaceIUnk != _pSavedSurfaceIUnk)
+                if (pSurfaceIUnk != SavedSurfaceIUnk)
                 {
-                    if (_pSavedSurfaceIUnk != IntPtr.Zero)
-                        Marshal.Release(_pSavedSurfaceIUnk);
+                    if (SavedSurfaceIUnk != IntPtr.Zero)
+                        Marshal.Release(SavedSurfaceIUnk);
 
-                    _pSavedSurfaceIUnk = pSurfaceIUnk;
-                    Marshal.AddRef(_pSavedSurfaceIUnk);
+                    SavedSurfaceIUnk = pSurfaceIUnk;
+                    Marshal.AddRef(SavedSurfaceIUnk);
 
                     previewSurface.Lock();
                     previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
-                    previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _pSavedSurfaceIUnk);
+                    previewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, SavedSurfaceIUnk);
                     previewSurface.Unlock();
                 }
 

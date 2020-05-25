@@ -2,11 +2,14 @@
 using GalaSoft.MvvmLight.Command;
 using MedialooksFrameEditor.Models;
 using MedialooksFrameEditor.Services;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace MedialooksFrameEditor.ViewModels
 {
@@ -46,6 +49,7 @@ namespace MedialooksFrameEditor.ViewModels
 
             _backgroundWorker = new BackgroundWorker();
             _backgroundWorker.DoWork += WorkerDoWork;
+            SystemEvents.SessionSwitch += HandleSessionSwitch;
 
             _drawLines = new List<CurveLine>();
 
@@ -57,6 +61,20 @@ namespace MedialooksFrameEditor.ViewModels
             _frameService.MFPreview.PreviewEnable("", 0, 1);
             _frameService.MFPreview.PropsSet("wpf_preview", "true");
             _frameService.MFPreview.PropsSet("wpf_preview.update", "0");
+        }
+
+        private void HandleSessionSwitch(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                PreviewSurface.Dispatcher.Invoke(new Action(() =>
+                {
+                    PreviewSurface.Lock();
+                    PreviewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);
+                    PreviewSurface.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _surfaceService.SavedSurfaceIUnk);
+                    PreviewSurface.Unlock();
+                }), DispatcherPriority.ContextIdle);
+            }
         }
 
         public string Text
@@ -124,7 +142,7 @@ namespace MedialooksFrameEditor.ViewModels
                 _textX = value;
                 RaisePropertyChanged();
                 UpdateOverlay();
-            } 
+            }
         }
 
         public int TextY
