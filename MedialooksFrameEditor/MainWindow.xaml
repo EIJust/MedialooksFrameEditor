@@ -11,6 +11,8 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="FrameEditor"
         Background="#fafafa"
+        MinHeight="500"
+        MinWidth="500"
         Height="650" Width="800">
     <Window.Resources>
         <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
@@ -18,41 +20,48 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition MinHeight="250" Height="*"/>
+            <RowDefinition MinHeight="100" Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="0" 
-               Source="{Binding Path=PreviewSurface}"
-               
-               helpers:SizeObserver.Observe="True"
-               helpers:SizeObserver.ObservedWidth="{Binding Width, Mode=TwoWay}"
-               helpers:SizeObserver.ObservedHeight="{Binding Height, Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-                <behaviors:MouseBehaviour 
+        <Grid Grid.Row="0">
+            <Image
+                x:Name="Image1"
+                Source="{Binding PreviewSurface, Mode=TwoWay}"
+                
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                
+                helpers:SizeObserver.Observe="True"
+                helpers:SizeObserver.ObservedWidth="{Binding Width, Mode=TwoWay}"
+                helpers:SizeObserver.ObservedHeight="{Binding Height, Mode=TwoWay}">
+                <i:Interaction.Behaviors>
+                    <behaviors:MouseBehaviour 
                     MouseX="{Binding MouseX, Mode=OneWayToSource}"
                     MouseY="{Binding MouseY, Mode=OneWayToSource}" />
-            </i:Interaction.Behaviors>
+                </i:Interaction.Behaviors>
 
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDown" >
-                    <i:InvokeCommandAction Command="{Binding MouseDownCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="MouseUp" >
-                    <i:InvokeCommandAction Command="{Binding MouseUpCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="MouseMove" >
-                    <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Image>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown" >
+                        <i:InvokeCommandAction Command="{Binding MouseDownCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseUp" >
+                        <i:InvokeCommandAction Command="{Binding MouseUpCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove" >
+                        <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
+        </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
-            <TextBox Width="310" Text="{Binding FilePath}"
-                     materialDesign:HintAssist.Hint="File path"
-                     FontSize="14"
-                     Style="{StaticResource MaterialDesignTextBox}"/>
+            <TextBox 
+                Width="310" Text="{Binding FilePath}"
+                materialDesign:HintAssist.Hint="File path"
+                FontSize="14"
+                Style="{StaticResource MaterialDesignTextBox}"/>
             <Button Content="Open" Command="{Binding OpenFileDialogCommand}" Margin="10 0 0 0"/>
             <Button Content="Clear All" Command="{Binding ClearAllCommand}" Margin="10 0 0 0"/>
         </StackPanel>

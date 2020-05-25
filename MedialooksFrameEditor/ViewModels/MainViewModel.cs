@@ -24,7 +24,7 @@ namespace MedialooksFrameEditor.ViewModels
 
         private bool _isMouseMoving;
         private bool _drawingLine;
-        private System.Windows.Media.Color _penColor;
+        private Color _penColor;
         private int _penSize;
         private int _panelWidth;
         private int _panelHeight;
@@ -51,8 +51,6 @@ namespace MedialooksFrameEditor.ViewModels
 
             PenSize = 1;
             FontSize = 8;
-            Width = 100;
-            Height = 100;
             PenColor = Color.FromRgb(0, 0, 0);
             AvailablePenSizes = new int[] { 1, 2, 4, 8, 16 };
 
@@ -190,7 +188,6 @@ namespace MedialooksFrameEditor.ViewModels
         private void HandlePreviewEvent(string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
         {
             _surfaceService.UpdateSurface(PreviewSurface, bsChannelID, bsEventName, bsEventParam, pEventObject);
-            RaisePropertyChanged(nameof(PreviewSurface));
         }
 
         private void WorkerDoWork(object sender, DoWorkEventArgs e)

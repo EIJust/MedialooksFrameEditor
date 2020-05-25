@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Data;
 
 namespace MedialooksFrameEditor.Helpers
 {
@@ -58,8 +59,8 @@ namespace MedialooksFrameEditor.Helpers
             {
                 frameworkElement.SizeChanged += OnFrameworkElementSizeChanged;
 
-                frameworkElement.SetCurrentValue(ObservedWidthProperty, frameworkElement.Width);
-                frameworkElement.SetCurrentValue(ObservedHeightProperty, frameworkElement.Height);
+                frameworkElement.SetCurrentValue(ObservedWidthProperty, frameworkElement.ActualWidth);
+                frameworkElement.SetCurrentValue(ObservedHeightProperty, frameworkElement.ActualHeight);
             }
             else
             {
