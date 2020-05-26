@@ -28,6 +28,7 @@
 
         <Grid Grid.Row="0">
             <Image
+                x:Name="FrameImage"
                 Source="{Binding PreviewSurface}"
                 
                 HorizontalAlignment="Stretch"
@@ -39,8 +40,8 @@
                 Margin="5">
                 <i:Interaction.Behaviors>
                     <behaviors:MouseBehaviour 
-                    MouseX="{Binding MouseX, Mode=OneWayToSource}"
-                    MouseY="{Binding MouseY, Mode=OneWayToSource}" />
+                        MouseX="{Binding MouseX, Mode=OneWayToSource}"
+                        MouseY="{Binding MouseY, Mode=OneWayToSource}" />
                 </i:Interaction.Behaviors>
 
                 <i:Interaction.Triggers>
@@ -99,7 +100,7 @@
 
             <DockPanel Grid.Column="1">
                 <toolkit:RichTextBox
-                    Text="{Binding Text}"
+                    Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                     VerticalAlignment="Stretch"
                     Height="190"
                     AcceptsReturn="True"

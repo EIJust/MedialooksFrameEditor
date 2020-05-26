@@ -76,7 +76,7 @@ namespace MedialooksFrameEditor.ViewModels
             set
             {
                 _previewSurface = value;
-                OnPropertyChanged("PreviewSurface");
+                RaisePropertyChanged();
             }
         }
         public Color PenColor
@@ -197,13 +197,19 @@ namespace MedialooksFrameEditor.ViewModels
         private void StartPreview()
         {
             _frameService.MFPreview.OnEventSafe -= HandlePreviewEvent;
-            PreviewSurface = new D3DImage();
             _frameService.MFPreview.OnEventSafe += HandlePreviewEvent;
         }
 
         private void HandlePreviewEvent(string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
         {
-            _surfaceService.UpdateSurface(PreviewSurface, bsChannelID, bsEventName, bsEventParam, pEventObject);
+            if (PreviewSurface == null)
+            {
+                PreviewSurface = _surfaceService.GetInitSurface(bsChannelID, bsEventName, bsEventParam, pEventObject);
+            }
+            else
+            {
+                _surfaceService.UpdateSurface(PreviewSurface, bsChannelID, bsEventName, bsEventParam, pEventObject);
+            }
         }
 
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
@@ -272,11 +278,6 @@ namespace MedialooksFrameEditor.ViewModels
             {
                 _dialogService.ShowMessage(error);
             }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChangedHandler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -14,6 +14,15 @@ namespace MedialooksFrameEditor.Models
             SavedSurfaceIUnk = new IntPtr();
         }
 
+        public D3DImage GetInitSurface(string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
+        {
+            var image = new D3DImage();
+
+            UpdateSurface(image, bsChannelID, bsEventName, bsEventParam, pEventObject);
+
+            return image;
+        }
+
         public void UpdateSurface(D3DImage previewSurface, string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
         {
             if (bsEventName == "wpf_nextframe")

@@ -9,5 +9,6 @@ namespace MedialooksFrameEditor.Models
 
         void ClearSurface();
         void UpdateSurface(D3DImage previewSurface, string bsChannelID, string bsEventName, string bsEventParam, object pEventObject);
+        D3DImage GetInitSurface(string bsChannelID, string bsEventName, string bsEventParam, object pEventObject);
     }
 }
