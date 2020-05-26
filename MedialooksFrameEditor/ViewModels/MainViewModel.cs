@@ -178,8 +178,8 @@ namespace MedialooksFrameEditor.ViewModels
         private void UpdateOverlay()
         {
             var overlay = new MFORMATSLib.MF_RECT();
-            overlay.dblWidth = Width - TextX;
-            overlay.dblHeight = Height - TextY;
+            overlay.dblWidth = PreviewSurface == null ? 0 : PreviewSurface.Width - TextX;
+            overlay.dblHeight = PreviewSurface == null ? 0 : PreviewSurface.Height - TextY;
             overlay.dblPosX = TextX;
             overlay.dblPosY = TextY;
 
@@ -205,6 +205,7 @@ namespace MedialooksFrameEditor.ViewModels
             if (PreviewSurface == null)
             {
                 PreviewSurface = _surfaceService.GetInitSurface(bsChannelID, bsEventName, bsEventParam, pEventObject);
+                UpdateOverlay();
             }
             else
             {
