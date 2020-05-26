@@ -223,7 +223,10 @@ namespace MedialooksFrameEditor.ViewModels
             {
                 var frame = _frameService.GetFrame();
 
-                frame = _frameService.DrawLinesOnFrame(frame, _isMouseMoving, _drawLines, Width, Height, MouseX, MouseY);
+                if (Width != 0 && Height != 0)
+                {
+                    frame = _frameService.DrawLinesOnFrame(frame, _isMouseMoving, _drawLines, Width, Height, MouseX, MouseY);
+                }
 
                 if (Text != null)
                 {
