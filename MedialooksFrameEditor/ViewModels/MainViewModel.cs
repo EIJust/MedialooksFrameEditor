@@ -105,6 +105,8 @@ namespace MedialooksFrameEditor.ViewModels
                 RaisePropertyChanged();
             }
         }
+
+        public IEnumerable<CurveLine> DrawLines => _drawLines;
         public IEnumerable<int> AvailablePenSizes { get; }
 
         public RelayCommand OpenFileDialogCommand { get; }

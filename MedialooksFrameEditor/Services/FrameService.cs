@@ -16,6 +16,7 @@ namespace MedialooksFrameEditor.Services
         {
             _mfReader = new MFReader();
 
+            Overlay = new MF_RECT();
             MFPreview = new MFPreviewClass();
         }
 
@@ -33,6 +34,11 @@ namespace MedialooksFrameEditor.Services
 
         public MFFrame DrawLinesOnFrame(MFFrame mFrame, bool isDrawing, List<CurveLine> lines, int panelWidth, int panelHeight, int x, int y)
         {
+            if (panelHeight <= 0 || panelWidth <= 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
             if (lines.Any())
             {
                 MFFrame mFrameDraw = CurveDraw.DrawFrame(isDrawing, mFrame, panelWidth, panelHeight, x, y, lines);
@@ -45,6 +51,11 @@ namespace MedialooksFrameEditor.Services
 
         public MFFrame DrawTextOnFrame(MFFrame mFrame, string text, int fontSize = 8)
         {
+            if (fontSize < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
             if (!string.IsNullOrEmpty(text))
             {
                 MFFrame mFrameClone = null;
