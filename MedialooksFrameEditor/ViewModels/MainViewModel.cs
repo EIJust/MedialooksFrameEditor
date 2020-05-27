@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -204,15 +205,18 @@ namespace MedialooksFrameEditor.ViewModels
 
         private void HandlePreviewEvent(string bsChannelID, string bsEventName, string bsEventParam, object pEventObject)
         {
-            if (PreviewSurface == null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                PreviewSurface = _surfaceService.GetInitSurface(bsChannelID, bsEventName, bsEventParam, pEventObject);
-                UpdateOverlay();
-            }
-            else
-            {
-                _surfaceService.UpdateSurface(PreviewSurface, bsChannelID, bsEventName, bsEventParam, pEventObject);
-            }
+                if (PreviewSurface == null)
+                {
+                    PreviewSurface = _surfaceService.GetInitSurface(bsChannelID, bsEventName, bsEventParam, pEventObject);
+                    UpdateOverlay();
+                }
+                else
+                {
+                    _surfaceService.UpdateSurface(PreviewSurface, bsChannelID, bsEventName, bsEventParam, pEventObject);
+                }
+            });
         }
 
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
